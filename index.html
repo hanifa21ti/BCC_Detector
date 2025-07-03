@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BCC Skin Cancer Detection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #4a90e2;
+            --dark-blue: #2c5e9a;
+            --light-gray: #f5f7fa;
+            --medium-gray: #e0e6ed;
+            --dark-gray: #334e68;
+            --red-alert: #e74c3c;
+            --green-success: #2ecc71;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--light-gray);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        h1 {
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark-blue);
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        .container {
+            background: white;
+            padding: 2.5rem 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 550px;
+            text-align: center;
+            border: 1px solid var(--medium-gray);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .custom-file-upload {
+            border: 2px dashed var(--primary-blue);
+            padding: 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            display: block;
+            margin-bottom: 1rem;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            font-size: 1rem;
+            color: var(--primary-blue);
+            font-weight: 500;
+        }
+
+        .custom-file-upload:hover {
+            background-color: #e6f0fa;
+            border-color: var(--dark-blue);
+        }
+
+        #file-name {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+            min-height: 20px;
+        }
+
+        button {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 0.9rem 1.8rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 145, 255, 0.2);
+        }
+
+        button:hover {
+            background-color: var(--dark-blue);
+            transform: translateY(-2px);
+        }
+
+        #loader {
+            display: none;
+            margin-top: 2rem;
+            font-size: 1.1rem;
+            color: var(--primary-blue);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+
+        #result {
+            margin-top: 2rem;
+            font-size: 1.3rem;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        #result.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .result-item {
+            margin-bottom: 0.8rem;
+        }
+
+        .highlight-positive {
+            font-weight: bold;
+            color: var(--red-alert);
+            font-size: 1.4rem;
+        }
+
+        .highlight-negative {
+            font-weight: bold;
+            color: var(--green-success);
+            font-size: 1.4rem;
+        }
+
+        .error-message {
+            color: var(--red-alert);
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <h1>Basal Cell Carcinoma (BCC) Skin Cancer Detection</h1>
+    <div class="container">
+        <form id="prediction-form" onsubmit="predictImage(event)">
+            <div class="form-group">
+                <label for="image" class="custom-file-upload">Choose Your Skin Image</label>
+                <input type="file" id="image" accept="image/*" required />
+                <div id="file-name">No image selected yet</div>
+            </div>
+            <button type="submit">Detect Now</button>
+        </form>
+        <div id="loader">Processing image... Please wait...</div>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('image').addEventListener('change', function () {
+            const fileNameDisplay = document.getElementById('file-name');
+            if (this.files.length > 0) {
+                fileNameDisplay.textContent = `Selected image: ${this.files[0].name}`;
+            } else {
+                fileNameDisplay.textContent = 'No image selected yet';
+            }
+        });
+
+        async function predictImage(event) {
+            event.preventDefault();
+
+            const formData = new FormData();
+            const imageInput = document.getElementById('image');
+            const resultText = document.getElementById('result');
+            const loader = document.getElementById('loader');
+
+            resultText.classList.remove('show');
+            resultText.innerHTML = "";
+
+            if (imageInput.files.length === 0) {
+                alert("Please select an image first.");
+                return;
+            }
+
+            formData.append("image", imageInput.files[0]);
+            loader.style.display = "block";
+
+            try {
+                const response = await fetch("http://127.0.0.1:5050/predict", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await response.json();
+                console.log("Response:", data);
+
+                let resultClass = '';
+                let resultMessage = '';
+
+                if (data.class) {
+                    if (data.class === 'malignant') {
+                        resultClass = 'highlight-positive';
+                        resultMessage = 'Cancer Detected (Malignant)';
+                    } else {
+                        resultClass = 'highlight-negative';
+                        resultMessage = 'No Cancer Detected (Benign)';
+                    }
+
+                    resultText.innerHTML = `
+                        <p class="result-item"><strong>Detection Result:</strong> <span class="${resultClass}">${resultMessage}</span></p>
+                        <p class="result-item"><strong>Confidence:</strong> ${Math.round(data.confidence * 100)}%</p>
+                    `;
+                } else if (data.result) {
+                    resultMessage = data.result;
+
+                    if (data.result.includes('Cancer')) {
+                        resultClass = 'highlight-positive';
+                    } else {
+                        resultClass = 'highlight-negative';
+                    }
+
+                    resultText.innerHTML = `
+                        <p class="result-item"><strong>Detection Result:</strong> <span class="${resultClass}">${resultMessage}</span></p>
+                        <p class="result-item"><strong>Confidence:</strong> ${Math.round(data.confidence * 100)}%</p>
+                    `;
+                } else if (data.error) {
+                    resultText.innerHTML = `<p class="error-message">Error from server: ${data.error}</p>`;
+                } else {
+                    resultText.innerHTML = `<p class="error-message">Unexpected response format.</p>`;
+                }
+
+                resultText.classList.add('show');
+
+            } catch (error) {
+                resultText.innerHTML = `<p class="error-message">An error occurred: ${error.message}</p>`;
+                resultText.classList.add('show');
+            } finally {
+                loader.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
