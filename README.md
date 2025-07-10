@@ -25,13 +25,13 @@ The dataset used is **HAM10000 ("Human Against Machine with 10000 training image
 - Git & GitHub
 
 ## 📁 Folder Structure
-'''
+
 bcc-detector/
 │
 ├── app.py            # Main application
 ├── model.h5          # Trained Keras model
 └── README.md         # Project description
-'''
+
 
 ## ⚙️ Running Locally
 1. Clone this repository to your local machine.
