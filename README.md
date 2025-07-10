@@ -1,65 +1,43 @@
-🩺 Basal Cell Carcinoma (BCC) Detection App
-The BCC Detection App is a web-based application designed to detect basal cell carcinoma (BCC) from skin lesion images. It uses a deep learning model, specifically a Convolutional Neural Network (CNN), trained to classify images into two categories: "BCC" (Basal Cell Carcinoma) and "Non-BCC". The goal of this project is to apply computer vision in the medical domain, particularly for assisting in early skin cancer screening.
+# 🩺 Basal Cell Carcinoma (BCC) Detection App
 
-This project was inspired by recent advances in AI-assisted dermatology and aims to demonstrate how deep learning models can support medical professionals in preliminary diagnosis. The current project enhances this idea by providing a user-friendly web interface built with Streamlit, allowing for easy accessibility and potential use as an educational tool.
+The **BCC Detection App** is a Python-based application designed to detect basal cell carcinoma (BCC) from skin lesion images. It uses a deep learning model, specifically a Convolutional Neural Network (CNN), trained to classify images into two categories: **"BCC" (Basal Cell Carcinoma)** and **"Non-BCC"**.
 
-The project is built using Python, utilizes TensorFlow/Keras for model training, and is deployed using Streamlit Cloud, enabling users to access the app directly from their browser without local setup. The trained model is stored externally (e.g., Google Drive) to keep the repository lightweight and facilitate easier updates.
+## 📄 Dataset
 
-The main benefits of this project are to highlight the application of AI in healthcare, encourage awareness of skin cancer detection, and serve as a learning reference for students, researchers, or developers interested in medical AI.
+The dataset used is **HAM10000 ("Human Against Machine with 10000 training images")**, available at [Kaggle](https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000).
 
-The app allows users to upload a skin lesion image, and within seconds, it provides a prediction on whether the lesion is likely to be basal cell carcinoma or not. The interface is designed to be simple and intuitive, requiring no technical background to use. The CNN model architecture includes convolutional layers for feature extraction and fully connected layers for final classification, with a sigmoid activation function to output binary predictions.
+- Total images: 10,015
+- BCC images: 514
+- Other lesion images: 9,501
 
-📄 Dataset
-The dataset used for this project is HAM10000 ("Human Against Machine with 10000 training images"), available at Kaggle.
-The dataset consists of 10,015 dermatoscopic images, covering various types of skin lesions. For this project, we focused on images labeled as "bcc" (basal cell carcinoma) and grouped all other classes into "non-bcc".
+## 🚀 Features
 
-Total images: 10,015
+- Load pre-trained `.h5` model
+- Classify whether the lesion is BCC or not
+- Can be integrated into a web backend or run locally
+- Simple Python script (`app.py`) for easy use
 
-Images labeled "bcc": 514
+## 🛠 Technologies Used
 
-Images labeled other: 9,501
+- Python
+- TensorFlow / Keras
+- NumPy, OpenCV, PIL
+- Git & GitHub
 
-💡 Project Inspiration
-The project aims to support early detection and raise awareness about skin cancer. It also demonstrates the potential of deep learning in assisting medical diagnostics and provides a hands-on example for students and developers interested in medical image analysis.
+## 📁 Folder Structure
 
-🚀 Features
-Upload skin lesion image via web interface
-
-Detects whether the lesion is basal cell carcinoma
-
-Displays results instantly with probability/confidence score
-
-Loads the model externally to keep repository size small
-
-Easy deployment on Streamlit Cloud
-
-🛠 Technologies Used
-Python
-
-TensorFlow / Keras
-
-Streamlit
-
-Google Drive (for model storage)
-
-Git & GitHub (version control and deployment)
-
-📁 Folder Structure
-bash
-Copy
-Edit
-bcc-detection-app/
+bcc-detector/
 │
-├── app.py            # Main Streamlit application
-├── requirements.txt  # Required Python packages
-├── .gitignore        # Files/folders to ignore in Git
-├── README.md         # Project description
-└── assets/           # Optional: image assets, example lesion images, logos
-🌐 Deploy on Streamlit Cloud
-1️⃣ Push your project to a public GitHub repository.
-2️⃣ Go to streamlit.io/cloud and sign in.
-3️⃣ Click "New app", choose your repository and select app.py as the entry point.
-4️⃣ Click "Deploy".
+├── app.py            # Main application
+├── model.h5          # Trained Keras model
+└── README.md         # Project description
+
+## ⚙️ Running Locally
+1️⃣ Clone this repository to your local machine.
+2️⃣ Install dependencies.
+3️⃣ Make sure model.h5 is in the same directory as app.py.
+4️⃣ Run the Python script.
+5️⃣ Follow the instructions printed on the console or modify app.py to integrate it into your web application.
 
 ⚠️ Disclaimer: This application is intended for educational and demonstration purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider for any questions regarding a medical condition.
 
