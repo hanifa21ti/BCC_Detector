@@ -25,19 +25,20 @@ The dataset used is **HAM10000 ("Human Against Machine with 10000 training image
 - Git & GitHub
 
 ## 📁 Folder Structure
-
+'''
 bcc-detector/
 │
 ├── app.py            # Main application
 ├── model.h5          # Trained Keras model
 └── README.md         # Project description
+'''
 
 ## ⚙️ Running Locally
-1️⃣ Clone this repository to your local machine.
-2️⃣ Install dependencies.
-3️⃣ Make sure model.h5 is in the same directory as app.py.
-4️⃣ Run the Python script.
-5️⃣ Follow the instructions printed on the console or modify app.py to integrate it into your web application.
+1. Clone this repository to your local machine.
+2. Install dependencies.
+3. Make sure model.h5 is in the same directory as app.py.
+4. Run the Python script.
+5. Follow the instructions printed on the console or modify app.py to integrate it into your web application.
 
 ⚠️ Disclaimer: This application is intended for educational and demonstration purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider for any questions regarding a medical condition.
 
