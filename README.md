@@ -21,8 +21,8 @@ The dataset used is **HAM10000 ("Human Against Machine with 10000 training image
 
 - Python
 - TensorFlow / Keras
-- NumPy, OpenCV, PIL
-- Git & GitHub
+- NumPy & PIL
+- GitHub
 
 ## 📁 Folder Structure
 
